@@ -2,6 +2,8 @@
 
 A fun screensaver-like application that bounces your mouse cursor around the screen like the classic DVD logo screensaver. The program automatically exits when you move your mouse.
 
+![Demo](recording.gif)
+
 ## Installation
 
 ### Download Binary for Windows
