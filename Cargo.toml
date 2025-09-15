@@ -1,0 +1,13 @@
+[package]
+name = "bouncing_cursor"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+enigo = "0.1"
+device_query = "1.1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
