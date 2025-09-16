@@ -20,7 +20,17 @@ fn main() {
 
     let tolerance = 5;
 
+    let mut last_middle_click = std::time::Instant::now();
+    let middle_click_inteval = std::time::Duration::from_secs(60);
+
     loop {
+
+        if last_middle_click.elapsed() >= middle_click_inteval{
+            mouse_controller.mouse_click(enigo::MouseButton::Middle);
+            last_middle_click = std::time::Instant::now();
+            println!("Middle click simulated");
+        }
+
         virtual_x += dx;
         virtual_y += dy;
 
