@@ -2,16 +2,21 @@
 
 use device_query::DeviceQuery;
 use enigo::MouseControllable;
+use std::ffi::OsStr;
+use std::os::windows::ffi::OsStrExt;
+use winapi::um::winuser::{FindWindowW, SendMessageW, WM_COMMAND};
 
 fn main() {
     println!("Curcor bouncing is running.");
+
+    minimize_all_windows();
 
     let mut mouse_controller = enigo::Enigo::new();
     let screen_size = mouse_controller.main_display_size();
     let mouse_listner = device_query::DeviceState::new();
 
     let initial_mouse_position = mouse_listner.get_mouse().coords;
-    
+
     let mut virtual_x = initial_mouse_position.0;
     let mut virtual_y = initial_mouse_position.1;
 
@@ -24,8 +29,7 @@ fn main() {
     let middle_click_inteval = std::time::Duration::from_secs(60);
 
     loop {
-
-        if last_middle_click.elapsed() >= middle_click_inteval{
+        if last_middle_click.elapsed() >= middle_click_inteval {
             mouse_controller.mouse_click(enigo::MouseButton::Middle);
             last_middle_click = std::time::Instant::now();
             println!("Middle click simulated");
@@ -58,4 +62,19 @@ fn main() {
 
         std::thread::sleep(std::time::Duration::from_millis(16));
     }
+}
+
+fn to_wstring(s: &str) -> Vec<u16> {
+    OsStr::new(s).encode_wide().chain(Some(0)).collect()
+}
+
+pub fn minimize_all_windows() {
+    unsafe {
+        let class = to_wstring("Shell_TrayWnd");
+        let hwnd = FindWindowW(class.as_ptr(), std::ptr::null());
+        if !hwnd.is_null() {
+            SendMessageW(hwnd, WM_COMMAND, 419, 0);
+        }
+    }
+    unsafe {}
 }

@@ -20,3 +20,7 @@ cargo build --release
 ## Usage
 
 Simply run the executable
+
+## Notes
+
+Works only for windows
